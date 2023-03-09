@@ -18,7 +18,7 @@ class NerdleTest {
     private static Nerdle.SymbolHint[] incorrecta;
 
     private static Stream<Arguments> casos() {
-        correctaTamOcho = new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT};
+        correctaTamOcho =new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT};
         correctaTamSeis = new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT};
         incorrecta =new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.USELESS};
         return Stream.of(
@@ -39,12 +39,10 @@ class NerdleTest {
 
         );
     }
-
-
     @ParameterizedTest
     @MethodSource("casos")
-    void getHintsTest(String guess, String solution, boolean isMini,  Nerdle.SymbolHint[] expected) {
-        assertEquals(expected, Nerdle.getHints(guess,solution,isMini));
+    void getHintsTest(String guess, String solution, boolean isMini,  Nerdle.SymbolHint[] expected) throws Exception{
+        assertArrayEquals(Arrays.stream(expected).toArray(),Nerdle.getHints(guess,solution,isMini));
     }
 
 }
