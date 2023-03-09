@@ -26,6 +26,14 @@ class NerdleTest {
                 arguments("12-6=6","12-6=6",true, correctaTamSeis),
                 arguments("19+-18=1","1-8+16=9",false, incorrecta),
                 arguments("19+++18=37","1-8+16=9",false, new Exception()),
+                arguments("19+1=20","1-8+16=9", true, new Exception()),
+                arguments("19+1=20","1-8+16=9",false, new Exception()),
+                arguments("1+1=2","1-8+16=9",true, new Exception()),
+                arguments("19++18=37","1-8+16=9",false, new Exception()),
+                arguments("1+2=3","1-8+16=9",true, new Exception()),
+                arguments("19+-18=1","1–+8+16=9",false, new Exception()),
+                arguments("19+-18=1","19+++18=37",false, new Exception()),
+                arguments("2+-1=1","1+2=3",true, new Exception())
 
 
 
