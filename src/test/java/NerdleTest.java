@@ -10,40 +10,32 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class NerdleTest {
-    private List<String> correctaTamOcho;
-    private List<String> correctaTamSeis;
-    private List<String> incorrecta;
+    private static Nerdle.SymbolHint[] correctaTamOcho;
+    private static Nerdle.SymbolHint[] correctaTamSeis;
+    private static Nerdle.SymbolHint[] incorrecta;
 
-    private static Stream<Arguments> provideResults() {
+    private static Stream<Arguments> casos() {
+        correctaTamOcho = new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.CORRECT};
+        correctaTamSeis = new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT,Nerdle.SymbolHint.CORRECT};
+        incorrecta =new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.USELESS};
         return Stream.of(
-                Arguments.of(new Nerdle.SymbolHint[]{Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.MISPLACED, Nerdle.SymbolHint.CORRECT, Nerdle.SymbolHint.USELESS}, true),
-                Arguments.of("", true),
-                Arguments.of("  ", true),
-                Arguments.of("not blank", false)
+                arguments("1-8+16=9","1-8+16=9",false, correctaTamOcho),
+                arguments("12-6=6","12-6=6",true, correctaTamSeis),
+                arguments("19+-18=1","1-8+16=9",false, incorrecta),
+                arguments("19+++18=37","1-8+16=9",false, new Exception()),
+
+
+
         );
     }
-    @BeforeEach
-    @MethodSource()
-    void setUp() {
 
-
-        correctaTamOcho = Arrays.asList("CORRECT","CORRECT","CORRECT","CORRECT","CORRECT","CORRECT","CORRECT","CORRECT");
-        correctaTamSeis = Arrays.asList("CORRECT","CORRECT","CORRECT","CORRECT","CORRECT","CORRECT");
-        incorrecta = Arrays.asList("CORRECT", "MISPLACED", "MISPLACED", "MISPLACED", "CORRECT", "MISPLACED", "CORRECT", "USELESS");
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void getHints() {
-    }
 
     @ParameterizedTest
-    void isBlank_ShouldReturnTrueForEmptyStrings(String guess, String solution, boolean isMini, boolean expected) {
+    @MethodSource("casos")
+    void getHintsTest(String guess, String solution, boolean isMini,  Nerdle.SymbolHint[] expected) {
         assertEquals(expected, Nerdle.getHints(guess,solution,isMini));
     }
 
