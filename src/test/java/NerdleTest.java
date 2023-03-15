@@ -23,27 +23,40 @@ class NerdleTest {
         return Stream.of(
                 arguments("1-8+16=9","1-8+16=9",false, caso2),
                 arguments("12-6=6","12-6=6",true, caso3),
-                arguments("19+-18=1","1-8+16=9",false, caso1),
-                arguments("19+++18=37","1-8+16=9",false, new Exception()),
-                arguments("19+1=20","1-8+16=9", true, new Exception()),
-                arguments("19+1=20","1-8+16=9",false, new Exception()),
-                arguments("1+1=2","1-8+16=9",true, new Exception()),
-                arguments("19++18=37","1-8+16=9",false, new Exception()),
-                arguments("1+2=3","1-8+16=9",true, new Exception()),
-                arguments("19+-18=1","1–+8+16=9",false, new Exception()),
-                arguments("19+-18=1","19+++18=37",false, new Exception()),
-                arguments("2+-1=1","1+2=3",true, new Exception())
+                arguments("19+-18=1","1-8+16=9",false, caso1)
+        );
+    }
+    public static Stream<Arguments> casos2() {
+
+        return Stream.of(
+                arguments("19+++18=37","1-8+16=9",false),
+                arguments("19+1=20","1-8+16=9", true),
+                arguments("19+1=20","1-8+16=9",false),
+                arguments("1+1=2","1-8+16=9",true),
+                arguments("19++18=37","1-8+16=9",false),
+                arguments("1+2=3","1-8+16=9",true),
+                arguments("19+-18=1","1–+8+16=9",false),
+                arguments("19+-18=1","19+++18=37",false),
+                arguments("2+-1=1","1+2=3",true)
         );
     }
     @ParameterizedTest
     @MethodSource("casos")
-    public void getHintsTest(String guess, String solution, boolean isMini,  Nerdle.SymbolHint[] expected) throws Exception{
+    public void getHintsTestValidos(String guess, String solution, boolean isMini,  Nerdle.SymbolHint[] expected) throws Exception {
         Nerdle.SymbolHint[] actualHints = Nerdle.getHints(guess, solution, isMini);
         for(Nerdle.SymbolHint hint: actualHints){
             System.out.println(hint);
         }
 
         assertArrayEquals(Arrays.stream(expected).toArray(),actualHints);
+    }
+
+    @ParameterizedTest
+    @MethodSource("casos2")
+    public void getHintsTestInvalidos(String guess, String solution, boolean isMini) throws Exception{
+        Exception exception = assertThrows(Exception.class, () -> {
+            Nerdle.SymbolHint[] actualHints = Nerdle.getHints(guess, solution, isMini);
+        });
     }
 
 

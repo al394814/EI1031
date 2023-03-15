@@ -19,7 +19,7 @@ public class Nerdle {
         // Not yet implemented...
         return false;
     }
-    public static SymbolHint[] getHints(String guess, String solution, boolean isMini) {
+    public static SymbolHint[] getHints(String guess, String solution, boolean isMini) throws Exception {
         SymbolHint[] hints = new SymbolHint[isMini ? MINI_LENGTH : NORMAL_LENGTH];
         Arrays.fill(hints, SymbolHint.USELESS);
         HashMap<Character, Integer> countsolution = getCharFreq(solution);
@@ -28,9 +28,15 @@ public class Nerdle {
             return hints;
         }
 
-        // Parse input expressions
 
+        // Check exceptions
+        if( (isMini && (guess.length()!=6 || solution.length()!=6))||
+                (!isMini && (guess.length()!=8 || solution.length()!=8))
+            ){
+            throw new Exception();
+        }
         int length = isMini ? MINI_LENGTH : NORMAL_LENGTH;
+
 
         // Compute symbol hints
 
