@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Nerdle {
     public static final int NORMAL_LENGTH = 8;
@@ -20,7 +22,7 @@ public class Nerdle {
     public static SymbolHint[] getHints(String guess, String solution, boolean isMini) {
         SymbolHint[] hints = new SymbolHint[isMini ? MINI_LENGTH : NORMAL_LENGTH];
         Arrays.fill(hints, SymbolHint.USELESS);
-
+        HashMap<Character, Integer> countsolution = getCharFreq(solution);
         // Validate input expressions
         if (validateExpression(guess) || validateExpression(solution)) {
             return hints;
@@ -35,24 +37,32 @@ public class Nerdle {
         for (int i = 0; i < length; i++) {
             char guessChar = guess.charAt(i);
             char solutionChar = solution.charAt(i);
-
+            Integer count = countsolution.get(guessChar);
             if (guessChar==solutionChar) {
                 hints[i] = SymbolHint.CORRECT;
+                countsolution.put(guessChar,count-1);
 
-            } else if (solution.contains(String.valueOf(guessChar))) {
+            } else if (count != null && count>0) {
                 hints[i] = SymbolHint.MISPLACED;
+                countsolution.put(guessChar,count-1);
 
-            } else {
-                hints[i] = SymbolHint.USELESS;
             }
         }
-
-
-
 
         return hints;
     }
 
+    public static HashMap<Character,Integer> getCharFreq(String s) {
+        HashMap<Character,Integer> charFreq = new HashMap<>();
+        if (s != null) {
+            for (Character c : s.toCharArray()) {
+                Integer count = charFreq.get(c);
+                int newCount = (count==null ? 1 : count+1);
+                charFreq.put(c, newCount);
+            }
+        }
+        return charFreq;
+    }
 
 
 
